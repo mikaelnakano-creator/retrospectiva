@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pamela & Mikael | Nossa Retrospectiva</title>
+  <meta name="description" content="Uma retrospectiva digital romântica do nosso relacionamento." />
+
+  <style>
+    :root {
+      --bg: #080808;
+      --card: #121212;
+      --card-2: #181818;
+      --green: #1DB954;
+      --gold: #d8b46a;
+      --text: #ffffff;
+      --muted: #b3b3b3;
+      --heart: #ff5c8a;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(216, 180, 106, .16), transparent 34%),
+        radial-gradient(circle at bottom, rgba(29, 185, 84, .13), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      height: 100vh;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0));
+    }
+
+    .progress {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      right: 18px;
+      display: flex;
+      gap: 5px;
+      z-index: 20;
+    }
+
+    .bar {
+      height: 3px;
+      flex: 1;
+      border-radius: 999px;
+      background: rgba(255,255,255,.20);
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--green);
+      transition: width .35s ease;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 54px 24px 104px;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      transform: translateX(20px) scale(.98);
+      transition: all .35s ease;
+    }
+
+    .slide.active {
+      display: flex;
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .kicker {
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    h1, h2 {
+      margin: 0;
+      line-height: 1.02;
+      letter-spacing: -1px;
+    }
+
+    h1 {
+      font-size: 48px;
+    }
+
+    h2 {
+      font-size: 38px;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.45;
+      margin: 18px 0 0;
+    }
+
+    .big {
+      font-size: 72px;
+      font-weight: 900;
+      letter-spacing: -4px;
+      color: var(--text);
+      line-height: .9;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.35);
+      margin-top: 22px;
+    }
+
+    .playlist-card {
+      background: linear-gradient(145deg, rgba(29,185,84,.28), rgba(216,180,106,.12), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 32px;
+      padding: 24px;
+      min-height: 330px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 30px 80px rgba(0,0,0,.38);
+    }
+
+    .cover {
+      aspect-ratio: 1/1;
+      border-radius: 24px;
+      background:
+        linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.55)),
+        url("assets/foto-capa.jpg");
+      background-size: cover;
+      background-position: center;
+      border: 1px solid rgba(255,255,255,.16);
+      margin-bottom: 18px;
+    }
+
+    .cover.placeholder {
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.20), transparent 24%),
+        linear-gradient(145deg, #1DB954, #141414 62%, #d8b46a);
+    }
+
+    .song-box {
+      margin-top: 24px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 24px;
+      padding: 18px;
+    }
+
+    .song-title {
+      font-size: 16px;
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .song-desc {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .play-btn, .nav-btn, .final-btn {
+      border: 0;
+      border-radius: 999px;
+      font-weight: 800;
+      cursor: pointer;
+      color: #07110b;
+      background: var(--green);
+      box-shadow: 0 12px 30px rgba(29,185,84,.30);
+    }
+
+    .play-btn {
+      width: 100%;
+      padding: 17px 20px;
+      font-size: 17px;
+      margin-top: 14px;
+    }
+
+    .photo {
+      width: 100%;
+      aspect-ratio: 4/5;
+      border-radius: 28px;
+      object-fit: cover;
+      background: linear-gradient(145deg, rgba(29,185,84,.35), rgba(216,180,106,.20));
+      border: 1px solid rgba(255,255,255,.13);
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    }
+
+    .photo-note {
+      background: rgba(0,0,0,.42);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 22px;
+      padding: 16px;
+      margin-top: -48px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+
+    .stat:last-child {
+      border-bottom: 0;
+    }
+
+    .stat strong {
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .stat span {
+      color: var(--green);
+      font-weight: 900;
+      font-size: 20px;
+      text-align: right;
+    }
+
+    .timeline {
+      margin-top: 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .time-item {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 20px;
+      padding: 16px;
+    }
+
+    .time-item small {
+      color: var(--gold);
+      font-weight: 800;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .time-item div {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .prayer {
+      font-family: Georgia, "Times New Roman", serif;
+      color: #f6ead0;
+      font-size: 20px;
+      line-height: 1.5;
+      border-left: 3px solid var(--gold);
+      padding-left: 16px;
+    }
+
+    .letter {
+      max-height: 58vh;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .letter p {
+      color: #e9e9e9;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .bottom-nav {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 22px;
+      display: flex;
+      gap: 10px;
+      z-index: 30;
+    }
+
+    .nav-btn {
+      flex: 1;
+      padding: 15px;
+      font-size: 15px;
+      background: rgba(255,255,255,.12);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: none;
+    }
+
+    .nav-btn.primary {
+      background: var(--green);
+      color: #07110b;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 20px;
+    }
+
+    .hidden-player {
+      width: 1px;
+      height: 1px;
+      opacity: 0.01;
+      pointer-events: none;
+      position: absolute;
+      left: -999px;
+      top: -999px;
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .gold {
+      color: var(--gold);
+    }
+
+    .heart {
+      color: var(--heart);
+    }
+
+    @media (max-height: 700px) {
+      h1 { font-size: 40px; }
+      h2 { font-size: 32px; }
+      .big { font-size: 58px; }
+      .slide { padding-top: 46px; padding-bottom: 92px; }
+      p { font-size: 15px; }
+      .playlist-card { min-height: 280px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <div class="progress" id="progress"></div>
+
+    <!-- Troque o VIDEO_ID abaixo no JavaScript pelo ID da música de vocês no YouTube -->
+    <iframe
+      id="youtubePlayer"
+      class="hidden-player"
+      title="Nossa música"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+
+    <!-- SLIDE 1 -->
+    <section class="slide active">
+      <div class="playlist-card">
+        <div>
+          <div class="cover placeholder" id="coverImage"></div>
+          <div class="kicker">Retrospectiva do amor</div>
+          <h1>Pamela & Mikael</h1>
+          <p>Uma pequena lembrança de tudo aquilo que Deus foi costurando com carinho na nossa história.</p>
+        </div>
+
+        <div class="song-box">
+          <div class="song-title">Nossa música começa aqui</div>
+          <div class="song-desc">Dá play e vai passando. Fiz isso pensando em você.</div>
+          <button class="play-btn" onclick="startMusic()">▶ Dar play na nossa música</button>
+          <div class="small" style="margin-top:10px;">Se o YouTube pedir permissão, é só tocar no play.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide">
+      <div class="kicker">Capítulo 01</div>
+      <h2>Quando você chegou</h2>
+      <p>
+        Eu não sei explicar todos os caminhos de Deus, mas sei reconhecer quando Ele coloca alguém especial
+        na nossa vida. Você chegou e, sem fazer barulho, foi virando paz, riso, oração e casa.
+      </p>
+      <div class="badge">✝️ Amor também é providência</div>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide">
+      <div class="kicker">Nossos números</div>
+      <h2>As estatísticas oficiais</h2>
+      <div class="card">
+        <div class="stat">
+          <strong>Sorrisos provocados</strong>
+          <span>∞</span>
+        </div>
+        <div class="stat">
+          <strong>Saudades acumuladas</strong>
+          <span>muitas</span>
+        </div>
+        <div class="stat">
+          <strong>Chance de eu te amar menos</strong>
+          <span>0%</span>
+        </div>
+        <div class="stat">
+          <strong>Vontade de construir uma vida contigo</strong>
+          <span>100%</span>
+        </div>
+      </div>
+      <p class="small">Dados coletados pelo Instituto Oficial do Coração Apaixonado.</p>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide">
+      <img class="photo" src="assets/foto-1.jpg" alt="Nossa foto 1" onerror="this.style.display='none'">
+      <div class="photo-note">
+        <div class="kicker">Uma lembrança</div>
+        <p>
+          Tem momentos que parecem simples, mas depois a gente entende: eram pequenos sinais de que a nossa história
+          estava criando raízes.
+        </p>
+      </div>
+    </section>
+
+    <!-- SLIDE 5 -->
+    <section class="slide">
+      <div class="kicker">Linha do tempo</div>
+      <h2>Nossa história em capítulos</h2>
+      <div class="timeline">
+        <div class="time-item">
+          <small>O começo</small>
+          <div>Quando nossas conversas começaram a ter gosto de futuro.</div>
+        </div>
+        <div class="time-item">
+          <small>O encontro</small>
+          <div>Quando estar perto ficou melhor do que qualquer plano.</div>
+        </div>
+        <div class="time-item">
+          <small>A escolha</small>
+          <div>Quando eu entendi que amar você também era decidir cuidar.</div>
+        </div>
+        <div class="time-item">
+          <small>A promessa</small>
+          <div>Que Deus continue sendo o centro daquilo que estamos construindo.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6 -->
+    <section class="slide">
+      <img class="photo" src="assets/foto-2.jpg" alt="Nossa foto 2" onerror="this.style.display='none'">
+      <div class="photo-note">
+        <div class="kicker">Seu efeito em mim</div>
+        <p>
+          Você tem esse jeito de me desmontar sem esforço: com um olhar, uma risada, uma mensagem ou até com essa
+          capacidade perigosa de estar certa algumas vezes.
+        </p>
+      </div>
+    </section>
+
+    <!-- SLIDE 7 -->
+    <section class="slide">
+      <div class="kicker">Fé</div>
+      <h2>O amor que aponta para Deus</h2>
+      <div class="card">
+        <div class="prayer">
+          Que o nosso amor nunca seja só emoção, mas também decisão, cuidado, paciência e entrega.
+          Que a nossa história tenha raízes no céu, mesmo quando os dias forem difíceis aqui na terra.
+        </div>
+      </div>
+      <p>
+        Eu quero que a gente reze junto, cresça junto, amadureça junto e aprenda a amar de um jeito que nos aproxime
+        mais de Deus.
+      </p>
+    </section>
+
+    <!-- SLIDE 8 -->
+    <section class="slide">
+      <div class="kicker">Top sentimentos</div>
+      <h2>O ranking do meu coração</h2>
+      <div class="card">
+        <div class="stat">
+          <strong>1. Gratidão por você</strong>
+          <span>top 1</span>
+        </div>
+        <div class="stat">
+          <strong>2. Orgulho da mulher que você é</strong>
+          <span>alto</span>
+        </div>
+        <div class="stat">
+          <strong>3. Vontade de te proteger</strong>
+          <span>diária</span>
+        </div>
+        <div class="stat">
+          <strong>4. Saudade mesmo estando perto</strong>
+          <span>sim</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9 -->
+    <section class="slide">
+      <img class="photo" src="assets/foto-3.jpg" alt="Nossa foto 3" onerror="this.style.display='none'">
+      <div class="photo-note">
+        <div class="kicker">Meu lugar favorito</div>
+        <p>
+          Com você, até os dias comuns ganham alguma coisa especial. Talvez seja isso: amor de verdade transforma rotina
+          em lembrança.
+        </p>
+      </div>
+    </section>
+
+    <!-- SLIDE 10 -->
+    <section class="slide">
+      <div class="kicker">Carta final</div>
+      <h2>Para você, meu amor</h2>
+      <div class="letter card">
+        <p>
+          Pamela, eu queria fazer algo simples, mas que carregasse verdade. Porque, no fim, é isso que eu mais quero
+          te entregar: verdade.
+        </p>
+        <p>
+          Verdade no meu amor, no meu cuidado, na minha vontade de construir uma vida contigo e na minha escolha diária
+          de permanecer.
+        </p>
+        <p>
+          Eu sei que nem sempre tudo é perfeito. Às vezes falta dinheiro, sobra preocupação, a vida aperta e os planos
+          parecem maiores do que a nossa força. Mas quando olho para você, eu lembro que algumas riquezas Deus não mede
+          em conta bancária. Ele mede em presença, em amor, em propósito e em pessoas que fazem a caminhada valer a pena.
+        </p>
+        <p>
+          Você é uma dessas pessoas para mim.
+        </p>
+        <p>
+          Obrigado por ser carinho, beleza, força, fé e também por ser essa mulher que me provoca a ser melhor.
+          Que Nossa Senhora cuide de nós, que Cristo seja sempre o centro, e que o nosso amor amadureça com paciência,
+          alegria e fidelidade.
+        </p>
+        <p>
+          Eu te amo. E mesmo que esse presente seja digital, o que eu sinto por você é muito real.
+        </p>
+      </div>
+    </section>
+
+    <!-- SLIDE 11 -->
+    <section class="slide">
+      <div class="kicker">Final</div>
+      <div class="big">Eu te amo.</div>
+      <p>
+        E essa retrospectiva é só uma pequena forma de dizer que viver nossa história tem sido uma das partes mais bonitas
+        da minha vida.
+      </p>
+      <div class="badge">❤️ Feliz Dia dos Namorados</div>
+    </section>
+
+    <div class="bottom-nav">
+      <button class="nav-btn" onclick="prevSlide()">Voltar</button>
+      <button class="nav-btn primary" onclick="nextSlide()">Próximo</button>
+    </div>
+  </main>
+
+  <script>
+    /*
+      COMO TROCAR A MÚSICA:
+      1. Abra o vídeo no YouTube.
+      2. Copie o ID do vídeo.
+         Exemplo: https://www.youtube.com/watch?v=ABC123
+         O ID é: ABC123
+      3. Substitua o valor abaixo.
+    */
+    const YOUTUBE_VIDEO_ID = "COLOQUE_AQUI_O_ID_DO_VIDEO";
+
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const progress = document.getElementById("progress");
+    const player = document.getElementById("youtubePlayer");
+    let current = 0;
+    let musicStarted = false;
+
+    slides.forEach(() => {
+      const bar = document.createElement("div");
+      bar.className = "bar";
+      bar.innerHTML = "<span></span>";
+      progress.appendChild(bar);
+    });
+
+    function updateSlides() {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle("active", index === current);
+      });
+
+      document.querySelectorAll(".bar span").forEach((span, index) => {
+        span.style.width = index <= current ? "100%" : "0%";
+      });
+    }
+
+    function nextSlide() {
+      if (current < slides.length - 1) {
+        current++;
+        updateSlides();
+      }
+    }
+
+    function prevSlide() {
+      if (current > 0) {
+        current--;
+        updateSlides();
+      }
+    }
+
+    function startMusic() {
+      if (!YOUTUBE_VIDEO_ID || YOUTUBE_VIDEO_ID === "COLOQUE_AQUI_O_ID_DO_VIDEO") {
+        alert("Antes de publicar, coloque o ID do vídeo do YouTube no arquivo index.html.");
+        return;
+      }
+
+      const url = `https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&playsinline=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}`;
+      player.src = url;
+      musicStarted = true;
+
+      if (current === 0) {
+        setTimeout(() => nextSlide(), 600);
+      }
+    }
+
+    // Navegação por toque: lado direito avança, lado esquerdo volta.
+    document.querySelector(".app").addEventListener("click", (event) => {
+      const clickedButton = event.target.closest("button");
+      if (clickedButton) return;
+
+      const x = event.clientX;
+      const middle = window.innerWidth / 2;
+
+      if (x > middle) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    });
+
+    // Teclado no computador
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") nextSlide();
+      if (event.key === "ArrowLeft") prevSlide();
+    });
+
+    updateSlides();
+  </script>
+</body>
+</html>
