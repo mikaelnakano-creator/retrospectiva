@@ -7,16 +7,17 @@
 
   <style>
     :root {
-      --bg: #16070d;
+      --bg: #14060c;
       --pink: #ff5c8a;
-      --pink-light: #ff9fbd;
+      --pink-light: #ffb3c9;
       --red: #d72638;
-      --wine: #5c1022;
+      --wine: #4d0b1a;
+      --deep-wine: #23070f;
       --green: #1DB954;
       --gold: #f4cf8a;
       --text: #ffffff;
-      --muted: #ffd7e3;
-      --card: rgba(255,255,255,.10);
+      --muted: #ffdce7;
+      --glass: rgba(255,255,255,.10);
     }
 
     * {
@@ -36,9 +37,9 @@
 
     body {
       background:
-        radial-gradient(circle at top left, rgba(255, 92, 138, .34), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(215, 38, 56, .30), transparent 36%),
-        linear-gradient(180deg, #2a0713 0%, #12060b 100%);
+        radial-gradient(circle at top left, rgba(255, 92, 138, .24), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(215, 38, 56, .22), transparent 38%),
+        linear-gradient(180deg, #2a0713 0%, #100409 100%);
     }
 
     .app {
@@ -50,8 +51,8 @@
       position: relative;
       overflow: hidden;
       background:
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,0)),
-        radial-gradient(circle at 50% 0%, rgba(255,255,255,.08), transparent 38%);
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)),
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.06), transparent 38%);
       touch-action: manipulation;
     }
 
@@ -65,7 +66,7 @@
 
     .heart-float {
       position: absolute;
-      color: rgba(255,255,255,.16);
+      color: rgba(255,255,255,.13);
       font-size: 20px;
       animation: floatHeart 9s linear infinite;
     }
@@ -82,7 +83,7 @@
         opacity: 0;
       }
       15% {
-        opacity: .75;
+        opacity: .65;
       }
       100% {
         transform: translateY(-110dvh) scale(1.25) rotate(18deg);
@@ -214,9 +215,9 @@
     .romantic-card {
       width: 100%;
       background:
-        linear-gradient(145deg, rgba(255,255,255,.17), rgba(255,255,255,.07)),
-        radial-gradient(circle at top left, rgba(255, 92, 138, .25), transparent 34%);
-      border: 1px solid rgba(255,255,255,.18);
+        linear-gradient(145deg, rgba(255,255,255,.15), rgba(255,255,255,.06)),
+        radial-gradient(circle at top left, rgba(255, 92, 138, .18), transparent 34%);
+      border: 1px solid rgba(255,255,255,.17);
       border-radius: 32px;
       padding: 20px;
       box-shadow: 0 28px 80px rgba(0,0,0,.38);
@@ -230,24 +231,35 @@
       position: absolute;
       right: 18px;
       top: 10px;
-      color: rgba(255,255,255,.12);
+      color: rgba(255,255,255,.10);
       font-size: 64px;
       transform: rotate(12deg);
+      pointer-events: none;
     }
 
     .cover-photo {
       width: 100%;
-      aspect-ratio: 1/1;
-      max-height: 34dvh;
+      aspect-ratio: 16 / 10;
+      max-height: 32dvh;
       border-radius: 26px;
       background:
-        linear-gradient(rgba(92,16,34,.12), rgba(92,16,34,.64)),
+        linear-gradient(rgba(0,0,0,.02), rgba(0,0,0,.14)),
         url("assets/foto-capa.jpg");
       background-size: cover;
       background-position: center;
       border: 1px solid rgba(255,255,255,.20);
       box-shadow: 0 18px 45px rgba(0,0,0,.32);
       margin-bottom: 18px;
+      position: relative;
+    }
+
+    .cover-photo::after {
+      content: "❤";
+      position: absolute;
+      right: -4px;
+      top: -10px;
+      font-size: 62px;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
     }
 
     .photo {
@@ -258,7 +270,7 @@
       border-radius: 30px;
       border: 1px solid rgba(255,255,255,.20);
       box-shadow: 0 20px 55px rgba(0,0,0,.36);
-      background: linear-gradient(145deg, rgba(255,92,138,.28), rgba(215,38,56,.18));
+      background: linear-gradient(145deg, rgba(255,92,138,.18), rgba(215,38,56,.12));
       margin-bottom: 18px;
     }
 
@@ -274,7 +286,7 @@
     }
 
     .photo-note {
-      background: rgba(65, 8, 24, .64);
+      background: rgba(65, 8, 24, .62);
       border: 1px solid rgba(255,255,255,.15);
       border-radius: 26px;
       padding: 18px;
@@ -283,7 +295,7 @@
 
     .song-box {
       margin-top: 20px;
-      background: rgba(255,255,255,.10);
+      background: rgba(255,255,255,.09);
       border: 1px solid rgba(255,255,255,.16);
       border-radius: 24px;
       padding: 16px;
@@ -318,6 +330,18 @@
       box-shadow: 0 14px 30px rgba(255,92,138,.32);
       position: relative;
       z-index: 90;
+    }
+
+    .youtube-player {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      border-radius: 24px;
+      margin-top: 18px;
+      background: #000;
+      box-shadow: 0 18px 48px rgba(0,0,0,.38);
+      position: relative;
+      z-index: 100;
     }
 
     .card {
@@ -491,36 +515,6 @@
       opacity: 1;
     }
 
-    .hidden-player {
-      width: 1px;
-      height: 1px;
-      opacity: 0.01;
-      pointer-events: none;
-      position: absolute;
-      left: -999px;
-      top: -999px;
-    }
-
-    .floating-play {
-      position: fixed;
-      right: 18px;
-      bottom: calc(env(safe-area-inset-bottom) + 18px);
-      width: 44px;
-      height: 44px;
-      border: 0;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--red), var(--pink));
-      color: #fff;
-      font-weight: 900;
-      z-index: 90;
-      display: none;
-      box-shadow: 0 10px 28px rgba(0,0,0,.35);
-    }
-
-    .floating-play.show {
-      display: block;
-    }
-
     .small {
       font-size: 13px;
       color: var(--muted);
@@ -601,15 +595,6 @@
 
     <div class="progress" id="progress"></div>
 
-    <iframe
-      id="youtubePlayer"
-      class="hidden-player"
-      title="Nossa música"
-      allow="autoplay; encrypted-media"
-      allowfullscreen>
-    </iframe>
-
-    <button class="floating-play" id="floatingPlay" onclick="startMusic(event)">▶</button>
     <div class="tap-hint" id="tapHint">Toque no lado direito para passar</div>
 
     <!-- SLIDE 1 -->
@@ -624,15 +609,46 @@
         </p>
 
         <div class="song-box">
-          <div class="song-title">Nossa música começa aqui</div>
-          <div class="song-desc">Dá play e vai passando. Fiz isso pensando em você.</div>
-          <button class="play-btn" onclick="startMusic(event)">▶ Dar play na nossa música</button>
-          <div class="small" style="margin-top:10px;">Depois é só tocar no lado direito da tela para avançar.</div>
+          <div class="song-title">Antes de começar...</div>
+          <div class="song-desc">
+            Toda boa história merece uma trilha sonora. Toque abaixo para abrir a música.
+          </div>
+          <button class="play-btn" onclick="goToSlide(1, 'next')">
+            ▶ Ir para nossa trilha sonora
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 2 -->
+    <!-- SLIDE 2 - PLAYER DO YOUTUBE -->
+    <section class="slide">
+      <div class="romantic-card">
+        <div class="kicker">Nossa trilha sonora</div>
+        <h2>Essa retrospectiva merece uma música</h2>
+        <p>
+          Antes de passar pelos nossos momentos, dá play na música abaixo. 
+          Porque algumas lembranças ficam ainda mais bonitas quando têm uma trilha sonora.
+        </p>
+
+        <iframe
+          id="youtubePlayer"
+          class="youtube-player"
+          title="Nossa música"
+          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+
+        <button class="play-btn" onclick="nextSlide()">
+          Começar retrospectiva ❤️
+        </button>
+
+        <p class="small">
+          Se o vídeo não tocar automaticamente, toque no play dentro do próprio player.
+        </p>
+      </div>
+    </section>
+
+    <!-- SLIDE 3 -->
     <section class="slide">
       <img class="small-photo" src="assets/foto-1.jpg" alt="Nossa foto 1">
       <div class="photo-note">
@@ -646,7 +662,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 3 -->
+    <!-- SLIDE 4 -->
     <section class="slide">
       <img class="small-photo" src="assets/foto-2.jpg" alt="Nossa foto 2">
       <div class="photo-note">
@@ -676,7 +692,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 4 -->
+    <!-- SLIDE 5 -->
     <section class="slide">
       <img class="photo" src="assets/foto-3.jpg" alt="Nossa foto 3">
       <div class="photo-note">
@@ -688,7 +704,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 5 -->
+    <!-- SLIDE 6 -->
     <section class="slide">
       <img class="small-photo" src="assets/foto-4.jpg" alt="Nossa foto 4">
       <div class="photo-note">
@@ -712,7 +728,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 6 - CARROSSEL -->
+    <!-- SLIDE 7 - CARROSSEL -->
     <section class="slide">
       <div class="carousel" id="carousel">
         <div class="carousel-track" id="carouselTrack">
@@ -736,7 +752,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 7 -->
+    <!-- SLIDE 8 -->
     <section class="slide">
       <img class="small-photo" src="assets/foto-10.jpg" alt="Nossa foto 10">
       <div class="photo-note">
@@ -749,7 +765,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 8 -->
+    <!-- SLIDE 9 -->
     <section class="slide">
       <img class="small-photo" src="assets/foto-11.jpg" alt="Nossa foto 11">
       <div class="photo-note">
@@ -770,7 +786,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 9 -->
+    <!-- SLIDE 10 -->
     <section class="slide">
       <img class="small-photo" src="assets/foto-12.jpg" alt="Nossa foto 12">
       <div class="photo-note">
@@ -798,7 +814,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 10 -->
+    <!-- SLIDE 11 -->
     <section class="slide">
       <img class="photo" src="assets/foto-13.jpg" alt="Nossa foto 13">
       <div class="photo-note">
@@ -810,7 +826,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 11 -->
+    <!-- SLIDE 12 -->
     <section class="slide">
       <img class="small-photo" src="assets/foto-14.jpg" alt="Nossa foto 14">
       <div class="photo-note">
@@ -846,7 +862,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 12 -->
+    <!-- SLIDE 13 -->
     <section class="slide">
       <img class="small-photo" src="assets/foto-15.jpg" alt="Nossa foto 15">
       <div class="photo-note">
@@ -864,23 +880,22 @@
 
   <script>
     /*
-      COMO TROCAR A MÚSICA:
+      COLOQUE AQUI O ID DO VÍDEO DO YOUTUBE.
+
       Exemplo:
-      https://www.youtube.com/watch?v=ABC123
-      ID do vídeo: ABC123
+      Link: https://www.youtube.com/watch?v=ABC123
+      ID: ABC123
     */
-    const YOUTUBE_VIDEO_ID = "hDdPveDOTVo";
+    const YOUTUBE_VIDEO_ID = "COLOQUE_AQUI_O_ID_DO_VIDEO";
 
     const app = document.getElementById("app");
     const slides = Array.from(document.querySelectorAll(".slide"));
     const progress = document.getElementById("progress");
-    const player = document.getElementById("youtubePlayer");
     const tapHint = document.getElementById("tapHint");
-    const floatingPlay = document.getElementById("floatingPlay");
+    const youtubePlayer = document.getElementById("youtubePlayer");
 
     let current = 0;
     let animating = false;
-    let musicStarted = false;
 
     slides.forEach(() => {
       const bar = document.createElement("div");
@@ -888,6 +903,23 @@
       bar.innerHTML = "<span></span>";
       progress.appendChild(bar);
     });
+
+    function setupYoutubePlayer() {
+      if (!YOUTUBE_VIDEO_ID || YOUTUBE_VIDEO_ID === "COLOQUE_AQUI_O_ID_DO_VIDEO") {
+        youtubePlayer.outerHTML = `
+          <div class="card" style="margin-top:18px;">
+            <p style="margin:0;">
+              Antes de publicar, troque o valor de
+              <strong>YOUTUBE_VIDEO_ID</strong> no final do arquivo pelo ID real da música.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      youtubePlayer.src =
+        `https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?playsinline=1&rel=0&modestbranding=1`;
+    }
 
     function updateProgress() {
       document.querySelectorAll(".bar span").forEach((span, index) => {
@@ -916,7 +948,6 @@
       setTimeout(() => {
         oldSlide.classList.remove("exit-left", "exit-right");
         animating = false;
-        checkFloatingPlay();
       }, 430);
     }
 
@@ -928,38 +959,10 @@
       goToSlide(current - 1, "prev");
     }
 
-    function startMusic(event) {
-      if (event) event.stopPropagation();
-
-      if (!YOUTUBE_VIDEO_ID || YOUTUBE_VIDEO_ID === "COLOQUE_AQUI_O_ID_DO_VIDEO") {
-        alert("Antes de publicar, coloque o ID do vídeo do YouTube no arquivo index.html.");
-        return;
-      }
-
-      const url = `https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&playsinline=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}`;
-      player.src = url;
-      musicStarted = true;
-      floatingPlay.classList.remove("show");
-
-      tapHint.classList.add("show");
-      setTimeout(() => tapHint.classList.remove("show"), 2200);
-
-      if (current === 0) {
-        setTimeout(() => nextSlide(), 650);
-      }
-    }
-
-    function checkFloatingPlay() {
-      if (!musicStarted && current > 0) {
-        floatingPlay.classList.add("show");
-      } else {
-        floatingPlay.classList.remove("show");
-      }
-    }
-
     app.addEventListener("click", (event) => {
       const clickedInteractive =
         event.target.closest("button") ||
+        event.target.closest("iframe") ||
         event.target.closest(".letter") ||
         event.target.closest(".carousel");
 
@@ -1039,6 +1042,7 @@
       });
     });
 
+    setupYoutubePlayer();
     updateProgress();
   </script>
 </body>
