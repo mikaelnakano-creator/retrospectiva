@@ -4,17 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Pamela & Mikael | Nossa Retrospectiva</title>
-  <meta name="description" content="Uma retrospectiva digital romântica do nosso relacionamento." />
 
   <style>
     :root {
-      --bg: #070707;
-      --card: #121212;
+      --bg: #16070d;
+      --pink: #ff5c8a;
+      --pink-light: #ff9fbd;
+      --red: #d72638;
+      --wine: #5c1022;
       --green: #1DB954;
-      --gold: #d8b46a;
+      --gold: #f4cf8a;
       --text: #ffffff;
-      --muted: #b3b3b3;
-      --heart: #ff5c8a;
+      --muted: #ffd7e3;
+      --card: rgba(255,255,255,.10);
     }
 
     * {
@@ -26,17 +28,17 @@
       margin: 0;
       width: 100%;
       min-height: 100%;
+      overflow: hidden;
       background: #000;
       color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
-      overflow: hidden;
     }
 
     body {
       background:
-        radial-gradient(circle at top, rgba(216, 180, 106, .14), transparent 34%),
-        radial-gradient(circle at bottom, rgba(29, 185, 84, .12), transparent 30%),
-        var(--bg);
+        radial-gradient(circle at top left, rgba(255, 92, 138, .34), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(215, 38, 56, .30), transparent 36%),
+        linear-gradient(180deg, #2a0713 0%, #12060b 100%);
     }
 
     .app {
@@ -47,8 +49,45 @@
       margin: 0 auto;
       position: relative;
       overflow: hidden;
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0));
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,0)),
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.08), transparent 38%);
       touch-action: manipulation;
+    }
+
+    .hearts-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .heart-float {
+      position: absolute;
+      color: rgba(255,255,255,.16);
+      font-size: 20px;
+      animation: floatHeart 9s linear infinite;
+    }
+
+    .heart-float:nth-child(1) { left: 8%; top: 88%; animation-delay: 0s; font-size: 18px; }
+    .heart-float:nth-child(2) { left: 22%; top: 94%; animation-delay: 1.4s; font-size: 26px; }
+    .heart-float:nth-child(3) { left: 48%; top: 90%; animation-delay: 2.8s; font-size: 16px; }
+    .heart-float:nth-child(4) { left: 71%; top: 96%; animation-delay: 4.2s; font-size: 30px; }
+    .heart-float:nth-child(5) { left: 87%; top: 89%; animation-delay: 5.6s; font-size: 20px; }
+
+    @keyframes floatHeart {
+      0% {
+        transform: translateY(0) scale(.8) rotate(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: .75;
+      }
+      100% {
+        transform: translateY(-110dvh) scale(1.25) rotate(18deg);
+        opacity: 0;
+      }
     }
 
     .progress {
@@ -60,14 +99,14 @@
       margin: 0 auto;
       display: flex;
       gap: 5px;
-      z-index: 50;
+      z-index: 80;
     }
 
     .bar {
       height: 3px;
       flex: 1;
       border-radius: 999px;
-      background: rgba(255,255,255,.20);
+      background: rgba(255,255,255,.24);
       overflow: hidden;
     }
 
@@ -82,21 +121,21 @@
     .slide {
       position: absolute;
       inset: 0;
-      padding:
-        calc(env(safe-area-inset-top) + 54px)
-        24px
-        calc(env(safe-area-inset-bottom) + 28px);
+      z-index: 5;
       display: none;
       flex-direction: column;
       justify-content: center;
+      padding:
+        calc(env(safe-area-inset-top) + 54px)
+        24px
+        calc(env(safe-area-inset-bottom) + 30px);
       opacity: 0;
-      transform: translateX(32px) scale(.985);
-      filter: blur(6px);
+      transform: translateX(34px) scale(.985);
+      filter: blur(7px);
       transition:
-        opacity .38s ease,
-        transform .38s cubic-bezier(.2,.8,.2,1),
-        filter .38s ease;
-      will-change: opacity, transform, filter;
+        opacity .42s ease,
+        transform .42s cubic-bezier(.2,.8,.2,1),
+        filter .42s ease;
     }
 
     .slide.active {
@@ -109,19 +148,19 @@
     .slide.exit-left {
       display: flex;
       opacity: 0;
-      transform: translateX(-28px) scale(.985);
-      filter: blur(6px);
+      transform: translateX(-32px) scale(.985);
+      filter: blur(7px);
     }
 
     .slide.exit-right {
       display: flex;
       opacity: 0;
-      transform: translateX(28px) scale(.985);
-      filter: blur(6px);
+      transform: translateX(32px) scale(.985);
+      filter: blur(7px);
     }
 
     .slide > * {
-      animation: riseIn .55s ease both;
+      animation: riseIn .58s ease both;
     }
 
     @keyframes riseIn {
@@ -136,12 +175,12 @@
     }
 
     .kicker {
-      color: var(--green);
+      color: var(--gold);
       text-transform: uppercase;
       letter-spacing: 2px;
       font-size: 12px;
-      font-weight: 800;
-      margin-bottom: 12px;
+      font-weight: 900;
+      margin-bottom: 10px;
     }
 
     h1, h2 {
@@ -155,82 +194,113 @@
     }
 
     h2 {
-      font-size: clamp(34px, 10vw, 44px);
+      font-size: clamp(32px, 10vw, 44px);
     }
 
     p {
       color: var(--muted);
-      font-size: 17px;
+      font-size: 16.5px;
       line-height: 1.45;
-      margin: 18px 0 0;
+      margin: 15px 0 0;
     }
 
     .big {
-      font-size: clamp(64px, 18vw, 82px);
+      font-size: clamp(62px, 18vw, 84px);
       font-weight: 900;
       letter-spacing: -4px;
-      color: var(--text);
       line-height: .9;
     }
 
-    .card {
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 28px;
-      padding: 22px;
-      box-shadow: 0 24px 70px rgba(0,0,0,.35);
-      margin-top: 22px;
-    }
-
-    .playlist-card {
+    .romantic-card {
       width: 100%;
-      max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 88px);
-      overflow: auto;
-      background: linear-gradient(145deg, rgba(29,185,84,.28), rgba(216,180,106,.12), rgba(255,255,255,.05));
-      border: 1px solid rgba(255,255,255,.14);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.17), rgba(255,255,255,.07)),
+        radial-gradient(circle at top left, rgba(255, 92, 138, .25), transparent 34%);
+      border: 1px solid rgba(255,255,255,.18);
       border-radius: 32px;
-      padding: 22px;
-      box-shadow: 0 30px 80px rgba(0,0,0,.38);
+      padding: 20px;
+      box-shadow: 0 28px 80px rgba(0,0,0,.38);
+      backdrop-filter: blur(18px);
+      position: relative;
+      overflow: hidden;
     }
 
-    .cover {
+    .romantic-card::before {
+      content: "❤";
+      position: absolute;
+      right: 18px;
+      top: 10px;
+      color: rgba(255,255,255,.12);
+      font-size: 64px;
+      transform: rotate(12deg);
+    }
+
+    .cover-photo {
       width: 100%;
       aspect-ratio: 1/1;
       max-height: 34dvh;
-      border-radius: 24px;
+      border-radius: 26px;
       background:
-        linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.55)),
+        linear-gradient(rgba(92,16,34,.12), rgba(92,16,34,.64)),
         url("assets/foto-capa.jpg");
       background-size: cover;
       background-position: center;
-      border: 1px solid rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.20);
+      box-shadow: 0 18px 45px rgba(0,0,0,.32);
       margin-bottom: 18px;
     }
 
-    .cover.placeholder {
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.20), transparent 24%),
-        linear-gradient(145deg, #1DB954, #141414 62%, #d8b46a);
+    .photo {
+      width: 100%;
+      max-height: 52dvh;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,.20);
+      box-shadow: 0 20px 55px rgba(0,0,0,.36);
+      background: linear-gradient(145deg, rgba(255,92,138,.28), rgba(215,38,56,.18));
+      margin-bottom: 18px;
+    }
+
+    .small-photo {
+      width: 100%;
+      max-height: 36dvh;
+      aspect-ratio: 16/11;
+      object-fit: cover;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.20);
+      box-shadow: 0 18px 46px rgba(0,0,0,.34);
+      margin-bottom: 18px;
+    }
+
+    .photo-note {
+      background: rgba(65, 8, 24, .64);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 26px;
+      padding: 18px;
+      backdrop-filter: blur(16px);
     }
 
     .song-box {
-      margin-top: 22px;
-      background: rgba(0,0,0,.24);
-      border: 1px solid rgba(255,255,255,.10);
+      margin-top: 20px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
       border-radius: 24px;
       padding: 16px;
+      position: relative;
+      z-index: 2;
     }
 
     .song-title {
       font-size: 16px;
-      color: var(--text);
-      font-weight: 800;
-      margin-bottom: 5px;
+      font-weight: 900;
+      color: #fff;
     }
 
     .song-desc {
       font-size: 13px;
       color: var(--muted);
+      margin-top: 5px;
       line-height: 1.35;
     }
 
@@ -243,9 +313,160 @@
       font-size: 16px;
       font-weight: 900;
       cursor: pointer;
-      color: #07110b;
-      background: var(--green);
-      box-shadow: 0 12px 30px rgba(29,185,84,.30);
+      color: #fff;
+      background: linear-gradient(135deg, var(--red), var(--pink));
+      box-shadow: 0 14px 30px rgba(255,92,138,.32);
+      position: relative;
+      z-index: 90;
+    }
+
+    .card {
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 28px;
+      padding: 20px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.35);
+      backdrop-filter: blur(16px);
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255,255,255,.14);
+    }
+
+    .stat:last-child {
+      border-bottom: 0;
+    }
+
+    .stat strong {
+      color: #fff;
+      font-size: 15.5px;
+    }
+
+    .stat span {
+      color: #fff;
+      background: linear-gradient(135deg, var(--red), var(--pink));
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-weight: 900;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .time-item {
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 22px;
+      padding: 15px;
+      backdrop-filter: blur(14px);
+    }
+
+    .time-item small {
+      color: var(--gold);
+      font-weight: 900;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .time-item div {
+      color: #fff;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .prayer {
+      font-family: Georgia, "Times New Roman", serif;
+      color: #fff4df;
+      font-size: 19px;
+      line-height: 1.5;
+      border-left: 3px solid var(--gold);
+      padding-left: 16px;
+    }
+
+    .letter {
+      max-height: 47dvh;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .letter p {
+      color: #fff1f6;
+      font-size: 15.5px;
+      line-height: 1.5;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.17);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-top: 18px;
+      width: fit-content;
+      backdrop-filter: blur(12px);
+    }
+
+    .carousel {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,.20);
+      box-shadow: 0 20px 55px rgba(0,0,0,.36);
+      margin-bottom: 18px;
+      background: rgba(255,255,255,.08);
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform .45s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .carousel img {
+      width: 100%;
+      min-width: 100%;
+      height: 48dvh;
+      object-fit: cover;
+      display: block;
+    }
+
+    .carousel-dots {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      z-index: 4;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.42);
+    }
+
+    .dot.active {
+      background: #fff;
+      width: 18px;
+      border-radius: 999px;
     }
 
     .tap-hint {
@@ -253,10 +474,10 @@
       left: 50%;
       bottom: calc(env(safe-area-inset-bottom) + 18px);
       transform: translateX(-50%);
-      z-index: 40;
-      background: rgba(0,0,0,.38);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.72);
+      z-index: 80;
+      background: rgba(65, 8, 24, .62);
+      border: 1px solid rgba(255,255,255,.16);
+      color: rgba(255,255,255,.82);
       backdrop-filter: blur(12px);
       border-radius: 999px;
       padding: 10px 14px;
@@ -270,119 +491,6 @@
       opacity: 1;
     }
 
-    .photo {
-      width: 100%;
-      max-height: 66dvh;
-      aspect-ratio: 4/5;
-      border-radius: 28px;
-      object-fit: cover;
-      background: linear-gradient(145deg, rgba(29,185,84,.35), rgba(216,180,106,.20));
-      border: 1px solid rgba(255,255,255,.13);
-      box-shadow: 0 20px 50px rgba(0,0,0,.35);
-    }
-
-    .photo-note {
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 22px;
-      padding: 16px;
-      margin-top: -48px;
-      position: relative;
-      z-index: 3;
-    }
-
-    .photo-note p {
-      margin-top: 6px;
-    }
-
-    .stat {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      align-items: center;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-    }
-
-    .stat:last-child {
-      border-bottom: 0;
-    }
-
-    .stat strong {
-      color: var(--text);
-      font-size: 16px;
-    }
-
-    .stat span {
-      color: var(--green);
-      font-weight: 900;
-      font-size: 20px;
-      text-align: right;
-    }
-
-    .timeline {
-      margin-top: 22px;
-      display: grid;
-      gap: 14px;
-    }
-
-    .time-item {
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 20px;
-      padding: 16px;
-    }
-
-    .time-item small {
-      color: var(--gold);
-      font-weight: 800;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .time-item div {
-      color: var(--text);
-      font-weight: 700;
-      line-height: 1.25;
-    }
-
-    .prayer {
-      font-family: Georgia, "Times New Roman", serif;
-      color: #f6ead0;
-      font-size: 20px;
-      line-height: 1.5;
-      border-left: 3px solid var(--gold);
-      padding-left: 16px;
-    }
-
-    .letter {
-      max-height: 58dvh;
-      overflow-y: auto;
-      padding-right: 6px;
-    }
-
-    .letter p {
-      color: #e9e9e9;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #fff;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      margin-top: 20px;
-      width: fit-content;
-    }
-
     .hidden-player {
       width: 1px;
       height: 1px;
@@ -393,31 +501,6 @@
       top: -999px;
     }
 
-    .small {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .gold { color: var(--gold); }
-    .heart { color: var(--heart); }
-
-    .tap-zone {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      z-index: 25;
-    }
-
-    .tap-left {
-      left: 0;
-      width: 32%;
-    }
-
-    .tap-right {
-      right: 0;
-      width: 68%;
-    }
-
     .floating-play {
       position: fixed;
       right: 18px;
@@ -426,10 +509,10 @@
       height: 44px;
       border: 0;
       border-radius: 50%;
-      background: rgba(29,185,84,.95);
-      color: #07110b;
+      background: linear-gradient(135deg, var(--red), var(--pink));
+      color: #fff;
       font-weight: 900;
-      z-index: 60;
+      z-index: 90;
       display: none;
       box-shadow: 0 10px 28px rgba(0,0,0,.35);
     }
@@ -438,25 +521,55 @@
       display: block;
     }
 
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .final-heart {
+      font-size: 58px;
+      margin-bottom: 14px;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.09); }
+    }
+
     @media (max-height: 760px) {
       .slide {
         padding-top: calc(env(safe-area-inset-top) + 46px);
         padding-bottom: calc(env(safe-area-inset-bottom) + 22px);
       }
 
-      .playlist-card {
+      .romantic-card {
         padding: 18px;
         border-radius: 28px;
       }
 
-      .cover {
-        max-height: 28dvh;
+      .cover-photo {
+        max-height: 27dvh;
         border-radius: 22px;
         margin-bottom: 14px;
       }
 
+      .photo {
+        max-height: 43dvh;
+        margin-bottom: 14px;
+      }
+
+      .small-photo {
+        max-height: 28dvh;
+        margin-bottom: 14px;
+      }
+
+      .carousel img {
+        height: 39dvh;
+      }
+
       .song-box {
-        margin-top: 16px;
+        margin-top: 15px;
         padding: 14px;
       }
 
@@ -468,12 +581,24 @@
         font-size: 15px;
         line-height: 1.4;
       }
+
+      .letter {
+        max-height: 42dvh;
+      }
     }
   </style>
 </head>
 
 <body>
-  <main class="app">
+  <main class="app" id="app">
+    <div class="hearts-bg">
+      <div class="heart-float">❤</div>
+      <div class="heart-float">♡</div>
+      <div class="heart-float">❤</div>
+      <div class="heart-float">♡</div>
+      <div class="heart-float">❤</div>
+    </div>
+
     <div class="progress" id="progress"></div>
 
     <iframe
@@ -485,19 +610,18 @@
     </iframe>
 
     <button class="floating-play" id="floatingPlay" onclick="startMusic(event)">▶</button>
+    <div class="tap-hint" id="tapHint">Toque no lado direito para passar</div>
 
-    <div class="tap-zone tap-left" onclick="prevSlide()"></div>
-    <div class="tap-zone tap-right" onclick="nextSlide()"></div>
-
-    <div class="tap-hint" id="tapHint">Toque para passar a retrospectiva</div>
-
+    <!-- SLIDE 1 -->
     <section class="slide active">
-      <div class="playlist-card">
-        <div class="cover placeholder"></div>
+      <div class="romantic-card">
+        <div class="cover-photo"></div>
 
         <div class="kicker">Retrospectiva do amor</div>
         <h1>Pamela & Mikael</h1>
-        <p>Uma pequena lembrança de tudo aquilo que Deus foi costurando com carinho na nossa história.</p>
+        <p>
+          Uma pequena lembrança de tudo aquilo que Deus foi costurando com carinho na nossa história.
+        </p>
 
         <div class="song-box">
           <div class="song-title">Nossa música começa aqui</div>
@@ -508,42 +632,53 @@
       </div>
     </section>
 
+    <!-- SLIDE 2 -->
     <section class="slide">
-      <div class="kicker">Capítulo 01</div>
-      <h2>Quando você chegou</h2>
-      <p>
-        Eu não sei explicar todos os caminhos de Deus, mas sei reconhecer quando Ele coloca alguém especial
-        na nossa vida. Você chegou e, sem fazer barulho, foi virando paz, riso, oração e casa.
-      </p>
-      <div class="badge">✝️ Amor também é providência</div>
-    </section>
-
-    <section class="slide">
-      <div class="kicker">Nossos números</div>
-      <h2>As estatísticas oficiais</h2>
-      <div class="card">
-        <div class="stat">
-          <strong>Sorrisos provocados</strong>
-          <span>∞</span>
-        </div>
-        <div class="stat">
-          <strong>Saudades acumuladas</strong>
-          <span>muitas</span>
-        </div>
-        <div class="stat">
-          <strong>Chance de eu te amar menos</strong>
-          <span>0%</span>
-        </div>
-        <div class="stat">
-          <strong>Vontade de construir uma vida contigo</strong>
-          <span>100%</span>
-        </div>
+      <img class="small-photo" src="assets/foto-1.jpg" alt="Nossa foto 1">
+      <div class="photo-note">
+        <div class="kicker">Capítulo 01</div>
+        <h2>Quando você chegou</h2>
+        <p>
+          Eu não sei explicar todos os caminhos de Deus, mas sei reconhecer quando Ele coloca alguém especial
+          na nossa vida. Você chegou e, sem fazer barulho, foi virando paz, riso, oração e casa.
+        </p>
+        <div class="badge">✝️ Amor também é providência</div>
       </div>
-      <p class="small">Dados coletados pelo Instituto Oficial do Coração Apaixonado.</p>
     </section>
 
+    <!-- SLIDE 3 -->
     <section class="slide">
-      <img class="photo" src="assets/foto-1.jpg" alt="Nossa foto 1" onerror="this.style.display='none'">
+      <img class="small-photo" src="assets/foto-2.jpg" alt="Nossa foto 2">
+      <div class="photo-note">
+        <div class="kicker">Nossos números</div>
+        <h2>Estatísticas oficiais</h2>
+
+        <div class="card" style="margin-top:16px;">
+          <div class="stat">
+            <strong>Sorrisos provocados</strong>
+            <span>∞</span>
+          </div>
+          <div class="stat">
+            <strong>Saudades acumuladas</strong>
+            <span>muitas</span>
+          </div>
+          <div class="stat">
+            <strong>Chance de eu te amar menos</strong>
+            <span>0%</span>
+          </div>
+          <div class="stat">
+            <strong>Vontade de construir uma vida contigo</strong>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <p class="small">Dados coletados pelo Instituto Oficial do Coração Apaixonado.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide">
+      <img class="photo" src="assets/foto-3.jpg" alt="Nossa foto 3">
       <div class="photo-note">
         <div class="kicker">Uma lembrança</div>
         <p>
@@ -553,33 +688,60 @@
       </div>
     </section>
 
+    <!-- SLIDE 5 -->
     <section class="slide">
-      <div class="kicker">Linha do tempo</div>
-      <h2>Nossa história em capítulos</h2>
-      <div class="timeline">
-        <div class="time-item">
-          <small>O começo</small>
-          <div>Quando nossas conversas começaram a ter gosto de futuro.</div>
-        </div>
-        <div class="time-item">
-          <small>O encontro</small>
-          <div>Quando estar perto ficou melhor do que qualquer plano.</div>
-        </div>
-        <div class="time-item">
-          <small>A escolha</small>
-          <div>Quando eu entendi que amar você também era decidir cuidar.</div>
-        </div>
-        <div class="time-item">
-          <small>A promessa</small>
-          <div>Que Deus continue sendo o centro daquilo que estamos construindo.</div>
+      <img class="small-photo" src="assets/foto-4.jpg" alt="Nossa foto 4">
+      <div class="photo-note">
+        <div class="kicker">Linha do tempo</div>
+        <h2>Nossa história em capítulos</h2>
+
+        <div class="timeline">
+          <div class="time-item">
+            <small>O começo</small>
+            <div>Quando nossas conversas começaram a ter gosto de futuro.</div>
+          </div>
+          <div class="time-item">
+            <small>O encontro</small>
+            <div>Quando estar perto ficou melhor do que qualquer plano.</div>
+          </div>
+          <div class="time-item">
+            <small>A escolha</small>
+            <div>Quando eu entendi que amar você também era decidir cuidar.</div>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- SLIDE 6 - CARROSSEL -->
     <section class="slide">
-      <img class="photo" src="assets/foto-2.jpg" alt="Nossa foto 2" onerror="this.style.display='none'">
+      <div class="carousel" id="carousel">
+        <div class="carousel-track" id="carouselTrack">
+          <img src="assets/foto-5.jpg" alt="Foto do nosso carrossel 1">
+          <img src="assets/foto-6.jpg" alt="Foto do nosso carrossel 2">
+          <img src="assets/foto-7.jpg" alt="Foto do nosso carrossel 3">
+          <img src="assets/foto-8.jpg" alt="Foto do nosso carrossel 4">
+          <img src="assets/foto-9.jpg" alt="Foto do nosso carrossel 5">
+        </div>
+
+        <div class="carousel-dots" id="carouselDots"></div>
+      </div>
+
+      <div class="photo-note">
+        <div class="kicker">Nossos momentos</div>
+        <h2>Algumas memórias favoritas</h2>
+        <p>
+          Cada foto guarda um pedacinho do que estamos vivendo. E eu espero, de coração, que isso seja só o começo
+          de muitas lembranças ainda mais bonitas.
+        </p>
+      </div>
+    </section>
+
+    <!-- SLIDE 7 -->
+    <section class="slide">
+      <img class="small-photo" src="assets/foto-10.jpg" alt="Nossa foto 10">
       <div class="photo-note">
         <div class="kicker">Seu efeito em mim</div>
+        <h2>Você me faz melhor</h2>
         <p>
           Você tem esse jeito de me desmontar sem esforço: com um olhar, uma risada, uma mensagem ou até com essa
           capacidade perigosa de estar certa algumas vezes.
@@ -587,46 +749,58 @@
       </div>
     </section>
 
+    <!-- SLIDE 8 -->
     <section class="slide">
-      <div class="kicker">Fé</div>
-      <h2>O amor que aponta para Deus</h2>
-      <div class="card">
-        <div class="prayer">
-          Que o nosso amor nunca seja só emoção, mas também decisão, cuidado, paciência e entrega.
-          Que a nossa história tenha raízes no céu, mesmo quando os dias forem difíceis aqui na terra.
-        </div>
-      </div>
-      <p>
-        Eu quero que a gente reze junto, cresça junto, amadureça junto e aprenda a amar de um jeito que nos aproxime
-        mais de Deus.
-      </p>
-    </section>
+      <img class="small-photo" src="assets/foto-11.jpg" alt="Nossa foto 11">
+      <div class="photo-note">
+        <div class="kicker">Fé</div>
+        <h2>O amor que aponta para Deus</h2>
 
-    <section class="slide">
-      <div class="kicker">Top sentimentos</div>
-      <h2>O ranking do meu coração</h2>
-      <div class="card">
-        <div class="stat">
-          <strong>1. Gratidão por você</strong>
-          <span>top 1</span>
+        <div class="card" style="margin-top:16px;">
+          <div class="prayer">
+            Que o nosso amor nunca seja só emoção, mas também decisão, cuidado, paciência e entrega.
+            Que a nossa história tenha raízes no céu, mesmo quando os dias forem difíceis aqui na terra.
+          </div>
         </div>
-        <div class="stat">
-          <strong>2. Orgulho da mulher que você é</strong>
-          <span>alto</span>
-        </div>
-        <div class="stat">
-          <strong>3. Vontade de te proteger</strong>
-          <span>diária</span>
-        </div>
-        <div class="stat">
-          <strong>4. Saudade mesmo estando perto</strong>
-          <span>sim</span>
-        </div>
+
+        <p>
+          Eu quero que a gente reze junto, cresça junto, amadureça junto e aprenda a amar de um jeito que nos aproxime
+          mais de Deus.
+        </p>
       </div>
     </section>
 
+    <!-- SLIDE 9 -->
     <section class="slide">
-      <img class="photo" src="assets/foto-3.jpg" alt="Nossa foto 3" onerror="this.style.display='none'">
+      <img class="small-photo" src="assets/foto-12.jpg" alt="Nossa foto 12">
+      <div class="photo-note">
+        <div class="kicker">Top sentimentos</div>
+        <h2>O ranking do meu coração</h2>
+
+        <div class="card" style="margin-top:16px;">
+          <div class="stat">
+            <strong>1. Gratidão por você</strong>
+            <span>top 1</span>
+          </div>
+          <div class="stat">
+            <strong>2. Orgulho da mulher que você é</strong>
+            <span>alto</span>
+          </div>
+          <div class="stat">
+            <strong>3. Vontade de te proteger</strong>
+            <span>diária</span>
+          </div>
+          <div class="stat">
+            <strong>4. Saudade mesmo estando perto</strong>
+            <span>sim</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10 -->
+    <section class="slide">
+      <img class="photo" src="assets/foto-13.jpg" alt="Nossa foto 13">
       <div class="photo-note">
         <div class="kicker">Meu lugar favorito</div>
         <p>
@@ -636,45 +810,55 @@
       </div>
     </section>
 
+    <!-- SLIDE 11 -->
     <section class="slide">
-      <div class="kicker">Carta final</div>
-      <h2>Para você, meu amor</h2>
-      <div class="letter card">
-        <p>
-          Pamela, eu queria fazer algo simples, mas que carregasse verdade. Porque, no fim, é isso que eu mais quero
-          te entregar: verdade.
-        </p>
-        <p>
-          Verdade no meu amor, no meu cuidado, na minha vontade de construir uma vida contigo e na minha escolha diária
-          de permanecer.
-        </p>
-        <p>
-          Eu sei que nem sempre tudo é perfeito. Às vezes falta dinheiro, sobra preocupação, a vida aperta e os planos
-          parecem maiores do que a nossa força. Mas quando olho para você, eu lembro que algumas riquezas Deus não mede
-          em conta bancária. Ele mede em presença, em amor, em propósito e em pessoas que fazem a caminhada valer a pena.
-        </p>
-        <p>
-          Você é uma dessas pessoas para mim.
-        </p>
-        <p>
-          Obrigado por ser carinho, beleza, força, fé e também por ser essa mulher que me provoca a ser melhor.
-          Que Nossa Senhora cuide de nós, que Cristo seja sempre o centro, e que o nosso amor amadureça com paciência,
-          alegria e fidelidade.
-        </p>
-        <p>
-          Eu te amo. E mesmo que esse presente seja digital, o que eu sinto por você é muito real.
-        </p>
+      <img class="small-photo" src="assets/foto-14.jpg" alt="Nossa foto 14">
+      <div class="photo-note">
+        <div class="kicker">Carta final</div>
+        <h2>Para você, meu amor</h2>
+
+        <div class="letter card" style="margin-top:16px;">
+          <p>
+            Pamela, eu queria fazer algo simples, mas que carregasse verdade. Porque, no fim, é isso que eu mais quero
+            te entregar: verdade.
+          </p>
+          <p>
+            Verdade no meu amor, no meu cuidado, na minha vontade de construir uma vida contigo e na minha escolha diária
+            de permanecer.
+          </p>
+          <p>
+            Eu sei que nem sempre tudo é perfeito. Às vezes falta dinheiro, sobra preocupação, a vida aperta e os planos
+            parecem maiores do que a nossa força. Mas quando olho para você, eu lembro que algumas riquezas Deus não mede
+            em conta bancária. Ele mede em presença, em amor, em propósito e em pessoas que fazem a caminhada valer a pena.
+          </p>
+          <p>
+            Você é uma dessas pessoas para mim.
+          </p>
+          <p>
+            Obrigado por ser carinho, beleza, força, fé e também por ser essa mulher que me provoca a ser melhor.
+            Que Nossa Senhora cuide de nós, que Cristo seja sempre o centro, e que o nosso amor amadureça com paciência,
+            alegria e fidelidade.
+          </p>
+          <p>
+            Eu te amo. E mesmo que esse presente seja digital, o que eu sinto por você é muito real.
+          </p>
+        </div>
       </div>
     </section>
 
+    <!-- SLIDE 12 -->
     <section class="slide">
-      <div class="kicker">Final</div>
-      <div class="big">Eu te amo.</div>
-      <p>
-        E essa retrospectiva é só uma pequena forma de dizer que viver nossa história tem sido uma das partes mais bonitas
-        da minha vida.
-      </p>
-      <div class="badge">❤️ Feliz Dia dos Namorados</div>
+      <img class="small-photo" src="assets/foto-15.jpg" alt="Nossa foto 15">
+      <div class="photo-note">
+        <div class="final-heart">❤️</div>
+        <div class="kicker">Final</div>
+        <div class="big">Eu te amo.</div>
+        <p>
+          E essa retrospectiva é só uma pequena forma de dizer que viver nossa história tem sido uma das partes mais bonitas
+          da minha vida.
+        </p>
+        <div class="badge">❤️ Feliz Dia dos Namorados</div>
+      </div>
     </section>
   </main>
 
@@ -687,6 +871,7 @@
     */
     const YOUTUBE_VIDEO_ID = "COLOQUE_AQUI_O_ID_DO_VIDEO";
 
+    const app = document.getElementById("app");
     const slides = Array.from(document.querySelectorAll(".slide"));
     const progress = document.getElementById("progress");
     const player = document.getElementById("youtubePlayer");
@@ -732,7 +917,7 @@
         oldSlide.classList.remove("exit-left", "exit-right");
         animating = false;
         checkFloatingPlay();
-      }, 420);
+      }, 430);
     }
 
     function nextSlide() {
@@ -772,6 +957,24 @@
       }
     }
 
+    app.addEventListener("click", (event) => {
+      const clickedInteractive =
+        event.target.closest("button") ||
+        event.target.closest(".letter") ||
+        event.target.closest(".carousel");
+
+      if (clickedInteractive) return;
+
+      const x = event.clientX;
+      const middle = window.innerWidth / 2;
+
+      if (x > middle) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    });
+
     document.addEventListener("keydown", (event) => {
       if (event.key === "ArrowRight") nextSlide();
       if (event.key === "ArrowLeft") prevSlide();
@@ -780,12 +983,12 @@
     let touchStartX = 0;
     let touchStartY = 0;
 
-    document.querySelector(".app").addEventListener("touchstart", (event) => {
+    app.addEventListener("touchstart", (event) => {
       touchStartX = event.changedTouches[0].screenX;
       touchStartY = event.changedTouches[0].screenY;
     }, { passive: true });
 
-    document.querySelector(".app").addEventListener("touchend", (event) => {
+    app.addEventListener("touchend", (event) => {
       const dx = event.changedTouches[0].screenX - touchStartX;
       const dy = event.changedTouches[0].screenY - touchStartY;
 
@@ -794,6 +997,47 @@
         if (dx > 0) prevSlide();
       }
     }, { passive: true });
+
+    /*
+      CARROSSEL DE FOTOS
+    */
+    const carouselTrack = document.getElementById("carouselTrack");
+    const carouselDots = document.getElementById("carouselDots");
+    const carouselImages = carouselTrack ? Array.from(carouselTrack.querySelectorAll("img")) : [];
+    let carouselIndex = 0;
+
+    if (carouselImages.length && carouselDots) {
+      carouselImages.forEach((_, index) => {
+        const dot = document.createElement("div");
+        dot.className = "dot";
+        if (index === 0) dot.classList.add("active");
+        carouselDots.appendChild(dot);
+      });
+
+      setInterval(() => {
+        carouselIndex = (carouselIndex + 1) % carouselImages.length;
+        updateCarousel();
+      }, 2500);
+    }
+
+    function updateCarousel() {
+      if (!carouselTrack) return;
+
+      carouselTrack.style.transform = `translateX(-${carouselIndex * 100}%)`;
+
+      document.querySelectorAll(".dot").forEach((dot, index) => {
+        dot.classList.toggle("active", index === carouselIndex);
+      });
+    }
+
+    /*
+      Se alguma foto não existir, ela some em vez de quebrar o layout.
+    */
+    document.querySelectorAll("img").forEach((img) => {
+      img.addEventListener("error", () => {
+        img.style.display = "none";
+      });
+    });
 
     updateProgress();
   </script>
