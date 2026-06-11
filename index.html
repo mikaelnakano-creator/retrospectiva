@@ -2,15 +2,14 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Pamela & Mikael | Nossa Retrospectiva</title>
   <meta name="description" content="Uma retrospectiva digital romântica do nosso relacionamento." />
 
   <style>
     :root {
-      --bg: #080808;
+      --bg: #070707;
       --card: #121212;
-      --card-2: #181818;
       --green: #1DB954;
       --gold: #d8b46a;
       --text: #ffffff;
@@ -23,36 +22,45 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(216, 180, 106, .16), transparent 34%),
-        radial-gradient(circle at bottom, rgba(29, 185, 84, .13), transparent 30%),
-        var(--bg);
+      width: 100%;
+      min-height: 100%;
+      background: #000;
       color: var(--text);
-      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
       overflow: hidden;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top, rgba(216, 180, 106, .14), transparent 34%),
+        radial-gradient(circle at bottom, rgba(29, 185, 84, .12), transparent 30%),
+        var(--bg);
     }
 
     .app {
       width: 100%;
       max-width: 430px;
-      height: 100vh;
+      height: 100dvh;
+      min-height: 100dvh;
       margin: 0 auto;
       position: relative;
       overflow: hidden;
       background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0));
+      touch-action: manipulation;
     }
 
     .progress {
-      position: absolute;
-      top: 14px;
-      left: 18px;
-      right: 18px;
+      position: fixed;
+      top: calc(env(safe-area-inset-top) + 14px);
+      left: max(18px, env(safe-area-inset-left));
+      right: max(18px, env(safe-area-inset-right));
+      max-width: 394px;
+      margin: 0 auto;
       display: flex;
       gap: 5px;
-      z-index: 20;
+      z-index: 50;
     }
 
     .bar {
@@ -74,19 +82,57 @@
     .slide {
       position: absolute;
       inset: 0;
-      padding: 54px 24px 104px;
+      padding:
+        calc(env(safe-area-inset-top) + 54px)
+        24px
+        calc(env(safe-area-inset-bottom) + 28px);
       display: none;
       flex-direction: column;
       justify-content: center;
       opacity: 0;
-      transform: translateX(20px) scale(.98);
-      transition: all .35s ease;
+      transform: translateX(32px) scale(.985);
+      filter: blur(6px);
+      transition:
+        opacity .38s ease,
+        transform .38s cubic-bezier(.2,.8,.2,1),
+        filter .38s ease;
+      will-change: opacity, transform, filter;
     }
 
     .slide.active {
       display: flex;
       opacity: 1;
       transform: translateX(0) scale(1);
+      filter: blur(0);
+    }
+
+    .slide.exit-left {
+      display: flex;
+      opacity: 0;
+      transform: translateX(-28px) scale(.985);
+      filter: blur(6px);
+    }
+
+    .slide.exit-right {
+      display: flex;
+      opacity: 0;
+      transform: translateX(28px) scale(.985);
+      filter: blur(6px);
+    }
+
+    .slide > * {
+      animation: riseIn .55s ease both;
+    }
+
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .kicker {
@@ -94,22 +140,22 @@
       text-transform: uppercase;
       letter-spacing: 2px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 12px;
     }
 
     h1, h2 {
       margin: 0;
       line-height: 1.02;
-      letter-spacing: -1px;
+      letter-spacing: -1.2px;
     }
 
     h1 {
-      font-size: 48px;
+      font-size: clamp(42px, 13vw, 58px);
     }
 
     h2 {
-      font-size: 38px;
+      font-size: clamp(34px, 10vw, 44px);
     }
 
     p {
@@ -120,7 +166,7 @@
     }
 
     .big {
-      font-size: 72px;
+      font-size: clamp(64px, 18vw, 82px);
       font-weight: 900;
       letter-spacing: -4px;
       color: var(--text);
@@ -137,19 +183,20 @@
     }
 
     .playlist-card {
+      width: 100%;
+      max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 88px);
+      overflow: auto;
       background: linear-gradient(145deg, rgba(29,185,84,.28), rgba(216,180,106,.12), rgba(255,255,255,.05));
       border: 1px solid rgba(255,255,255,.14);
       border-radius: 32px;
-      padding: 24px;
-      min-height: 330px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      padding: 22px;
       box-shadow: 0 30px 80px rgba(0,0,0,.38);
     }
 
     .cover {
+      width: 100%;
       aspect-ratio: 1/1;
+      max-height: 34dvh;
       border-radius: 24px;
       background:
         linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.55)),
@@ -167,44 +214,65 @@
     }
 
     .song-box {
-      margin-top: 24px;
-      background: rgba(255,255,255,.07);
+      margin-top: 22px;
+      background: rgba(0,0,0,.24);
       border: 1px solid rgba(255,255,255,.10);
       border-radius: 24px;
-      padding: 18px;
+      padding: 16px;
     }
 
     .song-title {
       font-size: 16px;
       color: var(--text);
-      font-weight: 700;
-      margin-bottom: 4px;
+      font-weight: 800;
+      margin-bottom: 5px;
     }
 
     .song-desc {
       font-size: 13px;
       color: var(--muted);
+      line-height: 1.35;
     }
 
-    .play-btn, .nav-btn, .final-btn {
+    .play-btn {
+      width: 100%;
       border: 0;
       border-radius: 999px;
-      font-weight: 800;
+      padding: 16px 18px;
+      margin-top: 14px;
+      font-size: 16px;
+      font-weight: 900;
       cursor: pointer;
       color: #07110b;
       background: var(--green);
       box-shadow: 0 12px 30px rgba(29,185,84,.30);
     }
 
-    .play-btn {
-      width: 100%;
-      padding: 17px 20px;
-      font-size: 17px;
-      margin-top: 14px;
+    .tap-hint {
+      position: fixed;
+      left: 50%;
+      bottom: calc(env(safe-area-inset-bottom) + 18px);
+      transform: translateX(-50%);
+      z-index: 40;
+      background: rgba(0,0,0,.38);
+      border: 1px solid rgba(255,255,255,.10);
+      color: rgba(255,255,255,.72);
+      backdrop-filter: blur(12px);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease;
+    }
+
+    .tap-hint.show {
+      opacity: 1;
     }
 
     .photo {
       width: 100%;
+      max-height: 66dvh;
       aspect-ratio: 4/5;
       border-radius: 28px;
       object-fit: cover;
@@ -214,7 +282,7 @@
     }
 
     .photo-note {
-      background: rgba(0,0,0,.42);
+      background: rgba(0,0,0,.45);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255,255,255,.10);
       border-radius: 22px;
@@ -222,6 +290,10 @@
       margin-top: -48px;
       position: relative;
       z-index: 3;
+    }
+
+    .photo-note p {
+      margin-top: 6px;
     }
 
     .stat {
@@ -272,6 +344,7 @@
     .time-item div {
       color: var(--text);
       font-weight: 700;
+      line-height: 1.25;
     }
 
     .prayer {
@@ -284,7 +357,7 @@
     }
 
     .letter {
-      max-height: 58vh;
+      max-height: 58dvh;
       overflow-y: auto;
       padding-right: 6px;
     }
@@ -293,31 +366,6 @@
       color: #e9e9e9;
       font-size: 16px;
       line-height: 1.5;
-    }
-
-    .bottom-nav {
-      position: absolute;
-      left: 18px;
-      right: 18px;
-      bottom: 22px;
-      display: flex;
-      gap: 10px;
-      z-index: 30;
-    }
-
-    .nav-btn {
-      flex: 1;
-      padding: 15px;
-      font-size: 15px;
-      background: rgba(255,255,255,.12);
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,.12);
-      box-shadow: none;
-    }
-
-    .nav-btn.primary {
-      background: var(--green);
-      color: #07110b;
     }
 
     .badge {
@@ -332,6 +380,7 @@
       font-size: 13px;
       font-weight: 700;
       margin-top: 20px;
+      width: fit-content;
     }
 
     .hidden-player {
@@ -349,21 +398,76 @@
       color: var(--muted);
     }
 
-    .gold {
-      color: var(--gold);
+    .gold { color: var(--gold); }
+    .heart { color: var(--heart); }
+
+    .tap-zone {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      z-index: 25;
     }
 
-    .heart {
-      color: var(--heart);
+    .tap-left {
+      left: 0;
+      width: 32%;
     }
 
-    @media (max-height: 700px) {
-      h1 { font-size: 40px; }
-      h2 { font-size: 32px; }
-      .big { font-size: 58px; }
-      .slide { padding-top: 46px; padding-bottom: 92px; }
-      p { font-size: 15px; }
-      .playlist-card { min-height: 280px; }
+    .tap-right {
+      right: 0;
+      width: 68%;
+    }
+
+    .floating-play {
+      position: fixed;
+      right: 18px;
+      bottom: calc(env(safe-area-inset-bottom) + 18px);
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(29,185,84,.95);
+      color: #07110b;
+      font-weight: 900;
+      z-index: 60;
+      display: none;
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+    }
+
+    .floating-play.show {
+      display: block;
+    }
+
+    @media (max-height: 760px) {
+      .slide {
+        padding-top: calc(env(safe-area-inset-top) + 46px);
+        padding-bottom: calc(env(safe-area-inset-bottom) + 22px);
+      }
+
+      .playlist-card {
+        padding: 18px;
+        border-radius: 28px;
+      }
+
+      .cover {
+        max-height: 28dvh;
+        border-radius: 22px;
+        margin-bottom: 14px;
+      }
+
+      .song-box {
+        margin-top: 16px;
+        padding: 14px;
+      }
+
+      .play-btn {
+        padding: 14px 16px;
+      }
+
+      p {
+        font-size: 15px;
+        line-height: 1.4;
+      }
     }
   </style>
 </head>
@@ -372,7 +476,6 @@
   <main class="app">
     <div class="progress" id="progress"></div>
 
-    <!-- Troque o VIDEO_ID abaixo no JavaScript pelo ID da música de vocês no YouTube -->
     <iframe
       id="youtubePlayer"
       class="hidden-player"
@@ -381,26 +484,30 @@
       allowfullscreen>
     </iframe>
 
-    <!-- SLIDE 1 -->
+    <button class="floating-play" id="floatingPlay" onclick="startMusic(event)">▶</button>
+
+    <div class="tap-zone tap-left" onclick="prevSlide()"></div>
+    <div class="tap-zone tap-right" onclick="nextSlide()"></div>
+
+    <div class="tap-hint" id="tapHint">Toque para passar a retrospectiva</div>
+
     <section class="slide active">
       <div class="playlist-card">
-        <div>
-          <div class="cover placeholder" id="coverImage"></div>
-          <div class="kicker">Retrospectiva do amor</div>
-          <h1>Pamela & Mikael</h1>
-          <p>Uma pequena lembrança de tudo aquilo que Deus foi costurando com carinho na nossa história.</p>
-        </div>
+        <div class="cover placeholder"></div>
+
+        <div class="kicker">Retrospectiva do amor</div>
+        <h1>Pamela & Mikael</h1>
+        <p>Uma pequena lembrança de tudo aquilo que Deus foi costurando com carinho na nossa história.</p>
 
         <div class="song-box">
           <div class="song-title">Nossa música começa aqui</div>
           <div class="song-desc">Dá play e vai passando. Fiz isso pensando em você.</div>
-          <button class="play-btn" onclick="startMusic()">▶ Dar play na nossa música</button>
-          <div class="small" style="margin-top:10px;">Se o YouTube pedir permissão, é só tocar no play.</div>
+          <button class="play-btn" onclick="startMusic(event)">▶ Dar play na nossa música</button>
+          <div class="small" style="margin-top:10px;">Depois é só tocar no lado direito da tela para avançar.</div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 2 -->
     <section class="slide">
       <div class="kicker">Capítulo 01</div>
       <h2>Quando você chegou</h2>
@@ -411,7 +518,6 @@
       <div class="badge">✝️ Amor também é providência</div>
     </section>
 
-    <!-- SLIDE 3 -->
     <section class="slide">
       <div class="kicker">Nossos números</div>
       <h2>As estatísticas oficiais</h2>
@@ -436,7 +542,6 @@
       <p class="small">Dados coletados pelo Instituto Oficial do Coração Apaixonado.</p>
     </section>
 
-    <!-- SLIDE 4 -->
     <section class="slide">
       <img class="photo" src="assets/foto-1.jpg" alt="Nossa foto 1" onerror="this.style.display='none'">
       <div class="photo-note">
@@ -448,7 +553,6 @@
       </div>
     </section>
 
-    <!-- SLIDE 5 -->
     <section class="slide">
       <div class="kicker">Linha do tempo</div>
       <h2>Nossa história em capítulos</h2>
@@ -472,7 +576,6 @@
       </div>
     </section>
 
-    <!-- SLIDE 6 -->
     <section class="slide">
       <img class="photo" src="assets/foto-2.jpg" alt="Nossa foto 2" onerror="this.style.display='none'">
       <div class="photo-note">
@@ -484,7 +587,6 @@
       </div>
     </section>
 
-    <!-- SLIDE 7 -->
     <section class="slide">
       <div class="kicker">Fé</div>
       <h2>O amor que aponta para Deus</h2>
@@ -500,7 +602,6 @@
       </p>
     </section>
 
-    <!-- SLIDE 8 -->
     <section class="slide">
       <div class="kicker">Top sentimentos</div>
       <h2>O ranking do meu coração</h2>
@@ -524,7 +625,6 @@
       </div>
     </section>
 
-    <!-- SLIDE 9 -->
     <section class="slide">
       <img class="photo" src="assets/foto-3.jpg" alt="Nossa foto 3" onerror="this.style.display='none'">
       <div class="photo-note">
@@ -536,7 +636,6 @@
       </div>
     </section>
 
-    <!-- SLIDE 10 -->
     <section class="slide">
       <div class="kicker">Carta final</div>
       <h2>Para você, meu amor</h2>
@@ -568,7 +667,6 @@
       </div>
     </section>
 
-    <!-- SLIDE 11 -->
     <section class="slide">
       <div class="kicker">Final</div>
       <div class="big">Eu te amo.</div>
@@ -578,28 +676,25 @@
       </p>
       <div class="badge">❤️ Feliz Dia dos Namorados</div>
     </section>
-
-    <div class="bottom-nav">
-      <button class="nav-btn" onclick="prevSlide()">Voltar</button>
-      <button class="nav-btn primary" onclick="nextSlide()">Próximo</button>
-    </div>
   </main>
 
   <script>
     /*
       COMO TROCAR A MÚSICA:
-      1. Abra o vídeo no YouTube.
-      2. Copie o ID do vídeo.
-         Exemplo: https://www.youtube.com/watch?v=ABC123
-         O ID é: ABC123
-      3. Substitua o valor abaixo.
+      Exemplo:
+      https://www.youtube.com/watch?v=ABC123
+      ID do vídeo: ABC123
     */
     const YOUTUBE_VIDEO_ID = "COLOQUE_AQUI_O_ID_DO_VIDEO";
 
     const slides = Array.from(document.querySelectorAll(".slide"));
     const progress = document.getElementById("progress");
     const player = document.getElementById("youtubePlayer");
+    const tapHint = document.getElementById("tapHint");
+    const floatingPlay = document.getElementById("floatingPlay");
+
     let current = 0;
+    let animating = false;
     let musicStarted = false;
 
     slides.forEach(() => {
@@ -609,31 +704,48 @@
       progress.appendChild(bar);
     });
 
-    function updateSlides() {
-      slides.forEach((slide, index) => {
-        slide.classList.toggle("active", index === current);
-      });
-
+    function updateProgress() {
       document.querySelectorAll(".bar span").forEach((span, index) => {
         span.style.width = index <= current ? "100%" : "0%";
       });
     }
 
+    function goToSlide(nextIndex, direction = "next") {
+      if (animating) return;
+      if (nextIndex < 0 || nextIndex >= slides.length || nextIndex === current) return;
+
+      animating = true;
+
+      const oldSlide = slides[current];
+      const newSlide = slides[nextIndex];
+
+      oldSlide.classList.remove("active");
+      oldSlide.classList.add(direction === "next" ? "exit-left" : "exit-right");
+
+      newSlide.classList.remove("exit-left", "exit-right");
+      newSlide.classList.add("active");
+
+      current = nextIndex;
+      updateProgress();
+
+      setTimeout(() => {
+        oldSlide.classList.remove("exit-left", "exit-right");
+        animating = false;
+        checkFloatingPlay();
+      }, 420);
+    }
+
     function nextSlide() {
-      if (current < slides.length - 1) {
-        current++;
-        updateSlides();
-      }
+      goToSlide(current + 1, "next");
     }
 
     function prevSlide() {
-      if (current > 0) {
-        current--;
-        updateSlides();
-      }
+      goToSlide(current - 1, "prev");
     }
 
-    function startMusic() {
+    function startMusic(event) {
+      if (event) event.stopPropagation();
+
       if (!YOUTUBE_VIDEO_ID || YOUTUBE_VIDEO_ID === "COLOQUE_AQUI_O_ID_DO_VIDEO") {
         alert("Antes de publicar, coloque o ID do vídeo do YouTube no arquivo index.html.");
         return;
@@ -642,34 +754,48 @@
       const url = `https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&playsinline=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}`;
       player.src = url;
       musicStarted = true;
+      floatingPlay.classList.remove("show");
+
+      tapHint.classList.add("show");
+      setTimeout(() => tapHint.classList.remove("show"), 2200);
 
       if (current === 0) {
-        setTimeout(() => nextSlide(), 600);
+        setTimeout(() => nextSlide(), 650);
       }
     }
 
-    // Navegação por toque: lado direito avança, lado esquerdo volta.
-    document.querySelector(".app").addEventListener("click", (event) => {
-      const clickedButton = event.target.closest("button");
-      if (clickedButton) return;
-
-      const x = event.clientX;
-      const middle = window.innerWidth / 2;
-
-      if (x > middle) {
-        nextSlide();
+    function checkFloatingPlay() {
+      if (!musicStarted && current > 0) {
+        floatingPlay.classList.add("show");
       } else {
-        prevSlide();
+        floatingPlay.classList.remove("show");
       }
-    });
+    }
 
-    // Teclado no computador
     document.addEventListener("keydown", (event) => {
       if (event.key === "ArrowRight") nextSlide();
       if (event.key === "ArrowLeft") prevSlide();
     });
 
-    updateSlides();
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    document.querySelector(".app").addEventListener("touchstart", (event) => {
+      touchStartX = event.changedTouches[0].screenX;
+      touchStartY = event.changedTouches[0].screenY;
+    }, { passive: true });
+
+    document.querySelector(".app").addEventListener("touchend", (event) => {
+      const dx = event.changedTouches[0].screenX - touchStartX;
+      const dy = event.changedTouches[0].screenY - touchStartY;
+
+      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx < 0) nextSlide();
+        if (dx > 0) prevSlide();
+      }
+    }, { passive: true });
+
+    updateProgress();
   </script>
 </body>
 </html>
